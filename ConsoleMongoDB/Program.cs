@@ -62,12 +62,35 @@ Console.WriteLine("Cgegou do banco assim: \n" + usuario);
 //    Builders<User>.Update.Set(x => x.Password, "100mudar")    atualiza um único campo do objeto
 //);
 
-collection.UpdateOne(
-    x => x.Id == "691739cdef79586e8b3f68c0", 
-    Builders<User>.Update.Set(x => x.Password, "100mudar").Set(x => x.Login, "Lucas") // atualiza dois campos do objeto 
-);
+//collection.UpdateOne(
+//    x => x.Id == "691739cdef79586e8b3f68c1", 
+//    Builders<User>.Update.Set(x => x.Password, "99mudar").Set(x => x.Login, "Ana Clara") // atualiza dois campos do objeto>
+//);
 
 
-usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c0").FirstOrDefault();
+//usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c1").FirstOrDefault();
 
-Console.WriteLine( usuario);
+//Console.WriteLine( usuario);
+
+//collection.DeleteOne(x => x.Id == "691739cdef79586e8b3f68c0");
+
+
+
+// trabalhando com operações assincronas. São utilizadas para não travar a aplicação: mesmo sem reposta, a aplicação continua executando. Quando tiver um retorno, ele processo o retorno. 
+
+
+//foreach(var  user in await collection.FindAsync(x => x.IsActive == true).Result.ToListAsync())
+//{
+//    Console.WriteLine(user);
+//    Console.WriteLine("---");
+//}
+
+List<User> usuariosNovos = new List<User>();
+for(int i = 0; i < 15000; i++)
+{
+    usuariosNovos.Add(new User("Maria", "123mudar"));
+    usuariosNovos.Add(new User("Luiz", "123mudar"));
+    usuariosNovos.Add(new User("Ana", "123mudar"));
+}
+
+collection.InsertMany(usuariosNovos);

@@ -10,87 +10,80 @@ var database = cliente.GetDatabase("InterAcaoMongoDb"); // use nomedobanco
 
 var collection = database.GetCollection<User>("Usuarios");
 
-// var usuario = new User("Felipe", "123mudar");
+//INSERINDO DADOS NO BANCO (InsertOne E InsertMany)
 
-//collection.InsertOne(usuario);
-
-//var usuariosNovos = new List<User>();
-//usuariosNovos.Add(new User("Maria", "123mudar"));
-//usuariosNovos.Add(new User("Luiz", "123mudar"));
-//usuariosNovos.Add(new User("Ana", "123mudar"));
-//collection.InsertMany(usuariosNovos);
-
-//var usuarios = collection.Find(x => true).ToList();
-
-//foreach(var usuar in usuarios)
-//{
-//   Console.WriteLine(usuar);
-//   Console.WriteLine("---");
-//}
-
-//var usuario = collection.Find(x => x.Login == "Felipe").FirstOrDefault(); // traz a primeira ocorrência encontrada
-//var usuario = collection.Find(x => x.Login == "Felipe").ToList(); // traz todas as ocorrências 
-//Console.WriteLine(usuario);
-
-//collection.UpdateOne<User>(x => x.Id == "691739cdef79586e8b3f68bf",)
+var usuario = new User("Felipe", "123mudar");
+collection.InsertOne(usuario);
+var usuariosNovos = new List<User>();
+usuariosNovos.Add(new User("Maria", "123mudar"));
+usuariosNovos.Add(new User("Luiz", "123mudar"));
+usuariosNovos.Add(new User("Ana", "123mudar"));
+collection.InsertMany(usuariosNovos);
 
 
-//var usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68bf").FirstOrDefault();
 
-//Console.WriteLine("Cgegou do banco assim: \n" + usuario);
+//BUSCANDO NO BANCO (Collection.Find)
 
-//Console.WriteLine("########");
-//usuario.Password = "456mudar"; // atualização em memoria na aplicação 
+var usuarios = collection.Find(x => true).ToList();
 
-//collection.ReplaceOne(x => x.Id == usuario.Id, usuario); // salva no banco a atualização
-//var usuario1 = collection.Find(x => x.Id == "691739cdef79586e8b3f68bf").FirstOrDefault();
-//Console.WriteLine(usuario1);
+foreach(var usuar in usuarios)
+{
+   Console.WriteLine(usuar);
+   Console.WriteLine("---");
+}
 
-var usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c0").FirstOrDefault();
+usuario = collection.Find(x => x.Login == "Felipe").FirstOrDefault(); // traz a primeira ocorrência encontrada
+usuario = collection.Find(x => x.Login == "Felipe").ToList(); // traz todas as ocorrências 
+Console.WriteLine(usuario);
+
+
+
+// ATUALIZANDO NO BANCO (UptadeOne e ReplaceOne)
+
+collection.UpdateOne<User>(x => x.Id == "691739cdef79586e8b3f68bf",);
+usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68bf").FirstOrDefault();
+Console.WriteLine("Cgegou do banco assim: \n" + usuario);
+
+Console.WriteLine("########");
+usuario.Password = "456mudar"; // atualização em memoria na aplicação 
+
+collection.ReplaceOne(x => x.Id == usuario.Id, usuario); // salva no banco a atualização
+var usuario1 = collection.Find(x => x.Id == "691739cdef79586e8b3f68bf").FirstOrDefault();
+Console.WriteLine(usuario1);
+
+usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c0").FirstOrDefault();
 
 Console.WriteLine("Cgegou do banco assim: \n" + usuario);
 
-//var filtro = Builders<User>.Filter.Eq(u => u.Id, "691739cdef79586e8b3f68c0");
-
-//var update = Builders<User>.Update.Set(u => u.Password, "159mudar");
-
-//collection.UpdateOne(filtro, update);
+var filtro = Builders<User>.Filter.Eq(u => u.Id, "691739cdef79586e8b3f68c0");
+var update = Builders<User>.Update.Set(u => u.Password, "159mudar");
+collection.UpdateOne(filtro, update);
 
 
-//collection.UpdateOne(
-//    x => x.Id == "691739cdef79586e8b3f68c0",
-//    Builders<User>.Update.Set(x => x.Password, "100mudar")    atualiza um único campo do objeto
-//);
+collection.UpdateOne(
+    x => x.Id == "691739cdef79586e8b3f68c0",
+    Builders<User>.Update.Set(x => x.Password, "100mudar")    //atualiza um único campo do objeto
+);
 
-//collection.UpdateOne(
-//    x => x.Id == "691739cdef79586e8b3f68c1", 
-//    Builders<User>.Update.Set(x => x.Password, "99mudar").Set(x => x.Login, "Ana Clara") // atualiza dois campos do objeto>
-//);
+collection.UpdateOne(
+    x => x.Id == "691739cdef79586e8b3f68c1", 
+    Builders<User>.Update.Set(x => x.Password, "99mudar").Set(x => x.Login, "Ana Clara") // atualiza dois campos do objeto>
+);
 
 
-//usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c1").FirstOrDefault();
+usuario = collection.Find(x => x.Id == "691739cdef79586e8b3f68c1").FirstOrDefault();
 
-//Console.WriteLine( usuario);
+Console.WriteLine( usuario);
 
-//collection.DeleteOne(x => x.Id == "691739cdef79586e8b3f68c0");
+collection.DeleteOne(x => x.Id == "691739cdef79586e8b3f68c0");
 
 
 
 // trabalhando com operações assincronas. São utilizadas para não travar a aplicação: mesmo sem reposta, a aplicação continua executando. Quando tiver um retorno, ele processo o retorno. 
 
 
-//foreach(var  user in await collection.FindAsync(x => x.IsActive == true).Result.ToListAsync())
-//{
-//    Console.WriteLine(user);
-//    Console.WriteLine("---");
-//}
-
-List<User> usuariosNovos = new List<User>();
-for(int i = 0; i < 15000; i++)
+foreach(var  user in await collection.FindAsync(x => x.IsActive == true).Result.ToListAsync())
 {
-    usuariosNovos.Add(new User("Maria", "123mudar"));
-    usuariosNovos.Add(new User("Luiz", "123mudar"));
-    usuariosNovos.Add(new User("Ana", "123mudar"));
+    Console.WriteLine(user);
+    Console.WriteLine("---");
 }
-
-collection.InsertMany(usuariosNovos);
